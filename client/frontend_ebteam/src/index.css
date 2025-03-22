@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import "tailwindcss";
+
+@theme{
+  --color-main: #3854AC;
+  --color-secondary: #9370db;
+  --color-ebwise-color: #9ad6ed;
+  --color-msteam-color: #cbc2ed;
+  --color-red-main: #8474ba;
+
+  --font-inter: "Courier Prime", monospace;
+  --font-audiowide: "Audiowide", sans-serif;
+}
