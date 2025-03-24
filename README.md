@@ -4,8 +4,13 @@ This project is a group-based project and I was only responsible for revamping t
 
 **Language: JavaScript **
 
-Front-end's Framework: **React.js**
-Back-end's Framework: **Express**
-Database: **MongoDB NoSQL** (Model in model folder of server)
+Front-end's Framework: **React.js**,
+
+Back-end's Framework: **Express**,
+
+Database: **MongoDB NoSQL** (Model in model folder of server),
+
+
+
 
 Packages Used: react-dom-router, react-icons, mongoose, express, react@, vite@, cors, mmulter, cloudinary, nodemon.
