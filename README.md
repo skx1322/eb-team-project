@@ -8,4 +8,4 @@ Front-end's Framework: **React.js**
 Back-end's Framework: **Express**
 Database: **MongoDB NoSQL** (Model in model folder of server)
 
-Library Used: react-dom-router, react-icons, mongoose, express, react@, vite@, cors,
+Packages Used: react-dom-router, react-icons, mongoose, express, react@, vite@, cors, mmulter, cloudinary, nodemon.
