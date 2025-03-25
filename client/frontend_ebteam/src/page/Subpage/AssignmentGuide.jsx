@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
 
 const AssignmentGuide = () => {
-  const videoRef = useRef(null); 
+  const videoRef = useRef(null);
   const [VideoData, setVideoData] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +76,15 @@ const AssignmentGuide = () => {
     }
   };
 
+  const CommentData = [
+    {
+      name: "Mutiara",
+      email: "mutiara@gmail.com",
+      content: "This was very informative!",
+      star: 5,
+    },
+  ];
+
   return (
     <div className="font-inter flex flex-col lg:w-[60%] items-center justify-start min-h-screen bg-white">
       <div className="flex justify-between bg-main w-full text-center p-6">
@@ -131,7 +141,9 @@ const AssignmentGuide = () => {
         ))}
       </div>
       <div className="flex flex-col w-full p-12 px-48">
-        <p className="text-3xl text-start underline">Comment Section (Work in progress)</p>
+        <p className="text-3xl text-start underline">
+          Comment Section (Work in progress)
+        </p>
         <p>0 Comment</p>
         <section className="flex flex-col">
           <form action="flex flex-col">
@@ -173,6 +185,28 @@ const AssignmentGuide = () => {
               </button>
             </div>
           </form>
+        </section>
+        <section className="flex flex-col mt-6 p-4">
+          <div className="border-2 border-main flex p-2 gap-4">
+            <div className="text-sm break-words w-16 h-16 border-2 border-secondary">
+              pretend a pfp here
+            </div>
+            <div className="flex flex-col">
+              <p>This was very informative!</p>
+              <div className="flex text-secondary mt-2">
+                <FaStar></FaStar>
+                <FaStar></FaStar>
+                <FaStar></FaStar>
+                <FaStar></FaStar>
+                <FaStar></FaStar>
+              </div>
+              <div className="flex gap-4 text-sm">
+                <p>Mutiara</p>
+                <p>9 month ago</p>
+                <p className="text-main cursor-pointer">Reply</p>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </div>
