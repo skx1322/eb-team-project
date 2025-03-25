@@ -13,4 +13,9 @@ Database: **MongoDB NoSQL** (Model in model folder of server),
 
 
 
-Packages Used: react-dom-router, react-icons, mongoose, express, react@, vite@, cors, mmulter, cloudinary, nodemon.
+Packages Used: react-dom-router, react-icons, mongoose, express, react@, vite@, cors, mmulter, cloudinary, nodemon, dotenv.
+
+How to run it in local environment,
+1. You need Node.js install (22.14 above is recommended)
+2. A MongoDB Cluster (you will have to enter
+3. Cloudinary API key
