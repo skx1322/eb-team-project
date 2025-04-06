@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import PlaceHolder from "../assets/FuHua31.png";
 
 const Developer = () => {
   const [DeveloperData, setDeveloperData] = useState([]);
@@ -27,10 +26,10 @@ const Developer = () => {
         Project during our last trimester of Foundation, Trimester 2410, March
         2024.
       </p>
-      <div className="grid grid-cols-2 w-full gap-12">
+      <div className="grid grid-cols-2 w-fit gap-36">
         {DeveloperData.map((Data, index) => (
           <div
-            className="flex flex-col object-cover transform transition-transform duration-300 hover:scale-105 justify-center items-center"
+            className="flex flex-col object-cover transform transition-transform duration-300 hover:scale-105 justify-center items-center group"
             key={index}
           >
             <img
@@ -38,7 +37,7 @@ const Developer = () => {
               alt={Data.cont_name}
               className="2xl w-64 h-64"
             />
-            <div className="text-xl bg-main text-white p-2 w-64 flex flex-col">
+            <div className="text-xl bg-main text-white p-2 w-64 flex flex-col group-hover:bg-secondary group-hover:shadow-2xl group-hover:text-black">
               <p className="break-words underline">{Data.cont_name}</p>
               <div className="flex justify-between">
                 <p>{Data.cont_role}</p>

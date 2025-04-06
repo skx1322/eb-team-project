@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
-import PlaceholderImage from "../assets/AssignmentPlaceholder.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 

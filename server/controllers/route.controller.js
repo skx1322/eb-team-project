@@ -1,9 +1,147 @@
+import AdminModel from "../model/admin.model.js";
 import ContributorModel from "../model/contributor.model.js";
 import TutorialDetailModel from "../model/tutorial.detail.model.js";
 import TutorialModel from "../model/tutorial.title.model.js";
 import imageDeleteCall from "../utils/deleteImage.js";
+import generatedAccessToken from "../utils/generatedAccessToken.js";
+import generatedRefreshToken from "../utils/generatedRefreshToken.js";
 import imageUploadCall from "../utils/uploadImage.js";
 import videoUploadCall from "../utils/uploadVideo.js";
+import bcryptjs from "bcryptjs";
+
+export async function createAdminAccount(req, res) {
+  try {
+    const { name, password, email } = req.body;
+
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide data",
+      });
+    }
+    const user = await AdminModel.findOne({ email });
+
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists in the database.",
+      });
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+    const hashPassword = await bcryptjs.hash(password, salt);
+
+    const payloadData = {
+      admin_name: name,
+      admin_password: hashPassword,
+      admin_email: email,
+    };
+
+    const newUser = new AdminModel(payloadData);
+    const save = await newUser.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Account successfully created.",
+      output: save,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong within the server",
+      output: error,
+    });
+  }
+}
+
+export async function loginAdminAccount(req, res) {
+  try {
+    const { name, password } = req.body;
+    const user = await AdminModel.findOne({ admin_name: name });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Admin does not exist.",
+      });
+    }
+
+    const passwordChecker = await bcryptjs.compare(
+      password,
+      user.admin_password
+    );
+    if (!passwordChecker) {
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect password.",
+      });
+    }
+
+    const accessToken = await generatedAccessToken(user._id);
+    const refreshToken = await generatedRefreshToken(user._id);
+
+    const cookieSetting = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+
+    res.cookie(`accessToken`, accessToken, cookieSetting);
+    res.cookie(`refreshToken`, refreshToken, cookieSetting);
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully login.",
+      output: user.admin_name,
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong in processing the data within the server.",
+      output: error,
+    });
+  }
+}
+
+export async function logoutAdminAccount(req, res) {
+  try {
+    const userid = req.userId;
+    if (!userid) {
+      return res.status(401).json({
+        success: false,
+        message: "Missing ID.",
+        output: error,
+      });
+    }
+    const cookieSetting = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    };
+
+    res.clearCookie("accessToken", cookieSetting);
+    res.clearCookie("refreshToken", cookieSetting);
+
+    const removeRefreshToken = await AdminModel.findByIdAndUpdate(userid, {
+      admin_passExpire: "",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully logout.",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server gone wrong.",
+      output: error,
+    });
+  }
+}
 
 export async function createContributor(req, res) {
   try {
@@ -324,7 +462,6 @@ export async function updateGuideData(req, res) {
       message: "Guide title successfully created",
       output: updatedGuide,
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -652,12 +789,8 @@ export async function updateTutorialStep(req, res) {
   }
 }
 
-export async function createComment(req, res){
+export async function createComment(req, res) {}
 
-}
-
-export async function getComment(req, res) {
-  
-}
+export async function getComment(req, res) {}
 
 // to do list: arrangeTutorialDetail, createComment, deleteComment

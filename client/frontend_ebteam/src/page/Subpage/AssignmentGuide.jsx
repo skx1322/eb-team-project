@@ -15,6 +15,7 @@ const AssignmentGuide = () => {
     content: "",
     name: "",
     email: "",
+    star: 1,
   });
 
   const handleChange = (e) => {
