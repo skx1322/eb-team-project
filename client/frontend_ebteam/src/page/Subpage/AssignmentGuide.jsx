@@ -3,6 +3,7 @@ import { useLocation, Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import Comment from "../../components/Comment";
 
 const AssignmentGuide = () => {
   const videoRef = useRef(null);
@@ -11,11 +12,13 @@ const AssignmentGuide = () => {
 
   const [TutorialData, setTutorialData] = useState([]);
 
+  const [hoverRating, setHoverRating] = useState(0);
+
   const [commentInput, setcommentInput] = useState({
     content: "",
     name: "",
     email: "",
-    star: 1,
+    rating: 0,
   });
 
   const handleChange = (e) => {
@@ -79,11 +82,13 @@ const AssignmentGuide = () => {
 
   const CommentData = [
     {
-      name: "Mutiara",
-      email: "mutiara@gmail.com",
+      name: "Nerdanta",
+      email: "nerdanta@gmail.com",
       content: "This was very informative!",
-      star: 5,
+      post_time: 30,
+      rating: 5,
     },
+    
   ];
 
   return (
@@ -141,11 +146,8 @@ const AssignmentGuide = () => {
           </div>
         ))}
       </div>
-      <div className="flex flex-col w-full p-12 px-48">
-        <p className="text-3xl text-start underline">
-          Comment Section (Work in progress)
-        </p>
-        <p>0 Comment</p>
+      <div className="flex flex-col w-full p-12 px-24 border-main border-x-12 mb-4">
+        <p className="text-3xl text-start underline">Comment Section</p>
         <section className="flex flex-col">
           <form action="flex flex-col">
             <textarea
@@ -154,11 +156,11 @@ const AssignmentGuide = () => {
               onChange={handleChange}
               placeholder="Leave a comment..."
               required
-              className="w-full text-xl border-2 border-main p-2 px-4 rounded-2xl break-words overflow-hidden resize-none min-h-[50px] max-h-[300px]"
+              className="w-full text-xl border-2 border-main p-2 rounded-md break-words overflow-hidden resize-none min-h-[50px] max-h-[300px] pb-12"
               rows={1} // Default height, will expand as needed
             />{" "}
-            <div className="flex justify-between items-start gap-4 mt-6">
-              <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-start gap-4">
+              <div className="flex flex-col gap-1">
                 <input
                   name="name"
                   value={commentInput.name}
@@ -166,7 +168,7 @@ const AssignmentGuide = () => {
                   type="text"
                   placeholder="Your name"
                   required
-                  className="w-full border-2 border-main p-2 px-4 rounded-xl"
+                  className="w-full border-2 border-main p-2 rounded-md"
                 />
                 <input
                   name="email"
@@ -175,8 +177,33 @@ const AssignmentGuide = () => {
                   type="email"
                   placeholder="Your email"
                   required
-                  className="w-full border-2 border-main p-2 px-4 rounded-xl"
+                  className="w-full border-2 border-main p-2 rounded-md"
                 />
+                <label className="text-lg">Rating: </label>
+                <div className="flex text-secondary gap-1">
+                  {[...Array(5)].map((_, index) => {
+                    const starValue = index + 1;
+                    return (
+                      <FaStar
+                        key={index}
+                        className={`cursor-pointer transition-all duration-200 ${
+                          starValue <= (hoverRating || commentInput.rating)
+                            ? "text-secondary scale-105"
+                            : "text-gray-400"
+                        }`}
+                        onClick={() =>
+                          setcommentInput((prev) => ({
+                            ...prev,
+                            rating: starValue,
+                          }))
+                        }
+                        onMouseEnter={() => setHoverRating(starValue)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        size={24}
+                      />
+                    );
+                  })}
+                </div>
               </div>
               <button
                 type="submit"
@@ -187,27 +214,11 @@ const AssignmentGuide = () => {
             </div>
           </form>
         </section>
-        <section className="flex flex-col mt-6 p-4">
-          <div className="border-2 border-main flex p-2 gap-4">
-            <div className="text-sm break-words w-16 h-16 border-2 border-secondary">
-              pretend a pfp here
-            </div>
-            <div className="flex flex-col">
-              <p>This was very informative!</p>
-              <div className="flex text-secondary mt-2">
-                <FaStar></FaStar>
-                <FaStar></FaStar>
-                <FaStar></FaStar>
-                <FaStar></FaStar>
-                <FaStar></FaStar>
-              </div>
-              <div className="flex gap-4 text-sm">
-                <p>Mutiara</p>
-                <p>9 month ago</p>
-                <p className="text-main cursor-pointer">Reply</p>
-              </div>
-            </div>
-          </div>
+        <section className="flex flex-col mt-6 gap-2">
+          <p className="underline text-2xl">0 Comment</p>
+          <Comment
+          prop={CommentData}
+          ></Comment>
         </section>
       </div>
     </div>
