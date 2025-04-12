@@ -1,4 +1,5 @@
 import AdminModel from "../model/admin.model.js";
+import CommentModel from "../model/comment.model.js";
 import ContributorModel from "../model/contributor.model.js";
 import TutorialDetailModel from "../model/tutorial.detail.model.js";
 import TutorialModel from "../model/tutorial.title.model.js";
@@ -789,8 +790,88 @@ export async function updateTutorialStep(req, res) {
   }
 }
 
-export async function createComment(req, res) {}
+export async function createComment(req, res) {
+  try {
+    const { id } = req.params;
+    const { name, email, content, rating } = req.body;
 
-export async function getComment(req, res) {}
+    if (!name || !email || !content || !rating || !id) {
+      return res.status(401).json({
+        success: false,
+        message: "Missing parameter or content.",
+        output: req?.body || req?.id,
+      });
+    }
 
-// to do list: arrangeTutorialDetail, createComment, deleteComment
+    const dataPayload = {
+      // awaiting modification
+      comment_user: name,
+      comment_email: email,
+      comment_content: content,
+      comment_rating: rating,
+      comment_image: null,
+      comment_in: id,
+    };
+
+    const newComment = new CommentModel(dataPayload);
+    const save = await newComment.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully created a comment.",
+      output: save,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong within the server",
+      output: error,
+    });
+  }
+}
+
+export async function getComment(req, res) {
+  try {
+    const { id } = req.params;
+    const sectionComment = await CommentModel.find({ comment_in: id });
+
+    return res.status(200).json({
+      success: false,
+      message: `Comment successfully collected for ${sectionComment[0].comment_in}`,
+      output: sectionComment,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong within the server",
+      output: error,
+    });
+  }
+}
+
+export async function deleteComment(req, res) {
+  try {
+    const { id } = req.params;
+    const selectedComment = await CommentModel.findById(id);
+    if (!selectedComment) {
+      return res.status(400).json({
+        success: false,
+        message: "No comment found via ID.",
+        output: id,
+      })
+    }
+    await CommentModel.findByIdAndDelete(id);
+    return res.status(200).json({
+      success: true, 
+      message: "Message succesfully deleted.",
+      output: selectedComment,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong within the server",
+      output: error,
+    });
+  }
+}
+// to do list: arrangeTutorialDetail, deleteComment

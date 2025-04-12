@@ -2,12 +2,15 @@ import { Router } from "express";
 import upload from "../middleware/multer.js";
 import {
   createAdminAccount,
+  createComment,
   createContributor,
   createGuide,
   createTutorialDetail,
+  deleteComment,
   deleteContributorData,
   deleteGuideData,
   deleteTutorialDetail,
+  getComment,
   getContributorData,
   getGuideData,
   getSpecificGuideData,
@@ -92,5 +95,11 @@ userRouter.put(
 userRouter.delete("/deleteContributorData/:id",auth, deleteGuideData);
 
 userRouter.delete("/deleteContributorData/:id",auth, deleteTutorialDetail);
+
+userRouter.post("/postUserComment/:id", createComment);
+
+userRouter.get("/getUserComment/:id", getComment);
+
+userRouter.delete("/deleteUserComment/:id", deleteComment)
 
 export default userRouter;
